@@ -2,16 +2,72 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Sortir.com{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Manrope:wght@200;300;400;500;600;700;800&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+
 
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+
+{# TODO : tester une fois les differentes pages crées la macro #}
+{# macro --> pour automatiser le aria-current#}
+{# TODO : rajouter les liens des pages #}
+{# TODO : voir la font si elle est correcte ou si on la fait plus arrondi #}
+            {# navbar #}
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                    <a class="navbar-brand fs-1" href="#">Logo Sortir.com</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarText">
+                        {% set current_route = app.request.attributes.get('_route') %}
+
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link " href="#">Accueil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link "  href="#">Villes</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Sites</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Mon profil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Se déconnecter</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+
+           {# {% macro nav_link(route, text) %}
+                {% set current_route = app.request.attributes.get('_route') %}
+                <li class="nav-item">
+                    <a class="nav-link{% if current_route == route %} active{% endif %}" {% if current_route == route %}aria-current="page"{% endif %} href="{{ path(route) }}">{{ text }}</a>
+                </li>
+            {% endmacro %}
+
+            {% import _self as macros %}
+
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                {{ macros.nav_link('home', 'Accueil') }}
+                {{ macros.nav_link('villes', 'Villes') }}
+                {{ macros.nav_link('sites', 'Sites') }}
+                {{ macros.nav_link('profil', 'Mon profil') }}
+                {{ macros.nav_link('deconnexion', 'Se déconnecter') }}
+            </ul>#}
+
+
     </body>
 </html>
