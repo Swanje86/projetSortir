@@ -13,7 +13,7 @@
         {% endblock %}
     </head>
     <body>
-
+<div class="content">
 {# TODO : tester une fois les differentes pages crées la macro #}
 {# macro --> pour automatiser le aria-current#}
 {# TODO : rajouter les liens des pages #}
@@ -67,7 +67,24 @@
                 {{ macros.nav_link('profil', 'Mon profil') }}
                 {{ macros.nav_link('deconnexion', 'Se déconnecter') }}
             </ul>#}
-
-
+</div>
+        <footer>
+            <div class="footer-container">
+                <div class="footer-section">
+                    <h6>Sortir.com</h6> <!-- Content for the first section goes here -->
+                    <p>© Copyrights. All right reserved. <a href="{{ path('app_connexion') }}">Sortir.com</a> </p>
+                </div>
+                <div class="footer-section">
+                    <h6>Sommaire</h6><!-- Content for the third section goes here -->
+                        <ul>
+                        {# TODO : changer les liens pour les bons #}
+                            <li> <a href="{{ path('app_connexion') }}"> accueil</a></li>
+                            <li> <a href="{{ path('app_connexion') }}"> Villes</a></li>
+                            <li> <a href="{{ path('app_connexion') }}"> Sites</a></li>
+                            <li> <a href="{{ path('app_connexion') }}"> Mon profil</a></li>
+                        </ul>
+                </div>
+            </div>
+        </footer>
     </body>
 </html>
