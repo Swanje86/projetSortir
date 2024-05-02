@@ -15,7 +15,13 @@ class SortieRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Sortie::class);
     }
-
+    public function findSortieBySearchTerm(string $term)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->where( 's.nomSite LIKE :term')
+            ->setParameter('term', '%'.$term.'%');
+        return $qb->getQuery()->getResult();
+    }
     //    /**
     //     * @return Sortie[] Returns an array of Sortie objects
     //     */
