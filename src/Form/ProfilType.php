@@ -7,37 +7,69 @@ use App\Entity\Site;
 use App\Entity\Sortie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class ProfilType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('pseudo', TextType::Class,[
-                'label' => 'Pseudo',
-            ])
+            ->add('pseudo')
             ->add('nom')
             ->add('prenom')
-            ->add('telephone')
+            ->add('telephone', NumberType::class,[
+                'label' => 'Téléphone',
+            ])
             ->add('mail')
-            ->add('motDePasse')
-            ->add('administrateur')
-            ->add('actif')
+            ->add('motDePasse', PasswordType::class,[
+                'required' => true,
+            ])
+            ->add('confirmation', PasswordType::class,[
+                'label' => 'Confirmation mot de passe',
+                'required' => true,
+                'mapped' => false,
+            ])
             ->add('site', EntityType::class, [
                 'class' => Site::class,
-                'choice_label' => 'id',
+                'choice_label' => 'nomSite',
+                'placeholder' => '-- Choisissez un site --',
+                'required' => true,
+
             ])
-            ->add('sorties', EntityType::class, [
-                'class' => Sortie::class,
-                'choice_label' => 'id',
-                'multiple' => true,
+            ->add('photo', FileType::class, [
+                'mapped' => false,
+                'required' => true,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'maxSizeMessage' => 'Votre image est trop volumineuse.',
+                        'mimeTypes' => [
+                            'image/jpeg',
+                            'image/jpg',
+                            'image/png',
+                        ],
+                        'mimeTypesMessage' => 'Veuillez respecter le format de l\'image.',
+                    ]),
+                ]
             ])
+
 
             ->add('submit', SubmitType::class, [
                 'label' => 'Enregistrer',
+                'attr' => [
+                    'class' => 'btn btn-primary',
+                ]
+            ])
+            ->add('reset', ResetType::class, [
+                'label' => 'Annuler',
                 'attr' => [
                     'class' => 'btn btn-primary',
                 ]

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} :: Modifier mon Profil{% endblock %}
+
+{% block body %}
+    <h2>Mon Profil</h2>
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-xl-6">
+            {{ form(participant_form) }}
+        </div>
+    </div>
+
+
+{% endblock %}

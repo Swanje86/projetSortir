@@ -8,6 +8,11 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
+
+h2 {
+    text-align: center;
+}
+
 .content{
     flex: 1 0 auto;
 }

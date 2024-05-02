@@ -6,8 +6,11 @@ use App\Repository\ParticipantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ParticipantRepository::class)]
+#[ORM\UniqueConstraint(columns: ['pseudo'])]
+#[UniqueEntity(fields: ['pseudo'], message: 'Ce pseudo existe déjà.')]
 class Participant
 {
     #[ORM\Id]
