@@ -10,6 +10,7 @@ use App\Entity\Sortie;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,6 +25,21 @@ class SortieType extends AbstractType
                 'class' => Site::class,
                 'choice_label' => 'nomSite',
             ])
+
+            ->add('searchTerm', TextType::class, [
+                'required' => false,
+                'mapped' => false, //false comme pas en lien avec l'entity Sortie
+            ])
+            ->add('dateStartFilter', DateType::class, [
+                'required' => false,
+                'widget' => 'single_text',
+                'mapped'=> false,//false comme pas en lien avec l'entity Sortie
+            ])
+            ->add('dateEndFilter', DateType::class, [
+            'required' => false,
+            'widget' => 'single_text',
+            'mapped'=> false,//false comme pas en lien avec l'entity Sortie
+    ]);
         ;
     }
 

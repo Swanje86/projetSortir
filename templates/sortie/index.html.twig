@@ -9,41 +9,28 @@
             {#        {{ app.participant.prenom }}{{ app.participant.nom|slice(0, 1)}}#}
             . </p>
     </div>
-    <div >
-        <h4>Filtrer les sorties</h4>
-        <p>Site : </p>
-        {{ form_start(form) }}
-        {{ form_row(form.siteOrganisateur) }}
-        {{ form_end(form) }}
-    </div>
-<div class="zone2">
-<p>Le nom de la sortie contient : </p>
 
-    {# templates/sortie/index.html.twig #}
 
-    {{ form_start(searchForm) }}
-    {{ form_row(searchForm.searchTerm) }}
-    {{ form_end(searchForm) }}
 
-    <!-- partie qui permet de display les sorties à l'ecran. Voir si tjrs utile une fois que le tableau sera en place -->
-    {#{% for sortie in sorties %}
-        <div>
-            <h2>{{ sortie.name }}</h2>
+    <div class="zone2">
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Filtrer les sorties</h4>
+                {{ form_start(form) }}
+                <p>Site : </p>
+                {{ form_row(form.siteOrganisateur) }}
+                <p>Le nom de la sortie contient : </p> {# TODO Nao : verifier que ça fonctionne bien #}
+                {{ form_row(form.searchTerm) }}
+
+            </div>
+            <div class="col-md-4">
+                <!-- Content for the second part -->
+            </div>
+            <div class="col-md-4">
+               <button type="submit">Rechercher</button>
+                {{ form_end(form) }}
+            </div>
         </div>
-    {% endfor %}#}
-</div>
-    <div class="zone3">
-
     </div>
-
-
-
-
-
-
-
-
-
-
 
 {% endblock %}
