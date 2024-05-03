@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sorties | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="zone1">
+        <p>Date du jour : {{ dateTime}} </p>
+        <p>Participant :
+            {#        {{ app.participant.prenom }}{{ app.participant.nom|slice(0, 1)}}#}
+            . </p>
+    </div>
+
+
+
+    <div class="zone2">
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Filtrer les sorties</h4>
+                {{ form_start(form) }}
+                <p>Site : </p>
+                {{ form_row(form.siteOrganisateur) }}
+                <p>Le nom de la sortie contient : </p> {# TODO Nao : verifier que ça fonctionne bien #}
+                {{ form_row(form.searchTerm) }}
+
+            </div>
+            <div class="col-md-4">
+                <!-- Content for the second part -->
+            </div>
+            <div class="col-md-4">
+               <button type="submit">Rechercher</button>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
