@@ -6,20 +6,24 @@ use App\Entity\Participant;
 use App\Entity\Site;
 use App\Entity\Sortie;
 use App\Form\ProfilType;
-use App\Form\SortieSearchType;
 use App\Form\SortieType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-class SortieController extends AbstractController
+class
+SortieController extends AbstractController
 {
     #[Route('/sortie', name: 'app_sortie')]
-    public function affichage_sorties(Request $request, EntityManagerInterface $em): Response
+    #[IsGranted('ROLE_USER')]
+    public function affichage_sorties(Request $request, EntityManagerInterface $em, Security $security): Response
     {
+        $participant = $security->getUser();
+
 
 
         $sortie = new Sortie();
@@ -56,6 +60,7 @@ class SortieController extends AbstractController
 
         //si le form n'est pas valide ou pas soumis, renvoi le template avec le form <-- pour les methodes qui ne font pas parties de l'entity
         return $this->render('sortie/index.html.twig', [
+            'participant' => $participant,
             'controller_name' => 'SortieController',
             'dateTime' => (new \DateTime())->format('d/m/Y'),
             'form' => $form->createView(),

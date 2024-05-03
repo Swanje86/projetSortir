@@ -18,7 +18,6 @@
     <dd>{{ participant.site.nomSite}}</dd>
 
     <a href="{{ path('app_Modify', {'id' : participant.id}) }}" class="btn btn-primary">Modifier</a>
-    {# TODO Mathilde - décommenter le bouton de retour juste en dessous #}
-   {# <a href="{{ path('app_sortie') }}" class="btn btn-primary">Retour</a> #}
+    <a href="{{ path('app_sortie') }}" class="btn btn-primary">Retour</a>
 
 {% endblock %}
