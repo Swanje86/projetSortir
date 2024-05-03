@@ -11,26 +11,67 @@
     </div>
 
 
+<!--Zone de filtre-->
 
-    <div class="zone2">
         <div class="row">
             <div class="col-md-4">
                 <h4>Filtrer les sorties</h4>
                 {{ form_start(form) }}
-                <p>Site : </p>
-                {{ form_row(form.siteOrganisateur) }}
-                <p>Le nom de la sortie contient : </p> {# TODO Nao : verifier que ça fonctionne bien #}
-                {{ form_row(form.searchTerm) }}
+                <p>Site : {{ form(form.siteOrganisateur) }}</p>
+
+                <p>Le nom de la sortie contient : {{ form(form.searchTerm) }}</p> {# TODO Nao : verifier que ça fonctionne bien #}
+                <p>Entre {{ form(form.dateStartFilter) }} et  {{ form(form.dateEndFilter) }}</p>
 
             </div>
             <div class="col-md-4">
-                <!-- Content for the second part -->
+                {{form(form.conditions)}}
             </div>
             <div class="col-md-4">
                <button type="submit">Rechercher</button>
                 {{ form_end(form) }}
             </div>
         </div>
-    </div>
+
+
+<!-- zone d'affichage des sorties-->
+        <table class="table table-success table-striped table-bordered">
+            <thead>
+            <tr>
+               <th>Nom de la sortie</th>
+               <th>Date</th>
+               <th>Clôture</th>
+               <th>Inscrits/places</th>
+               <th>Etat</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
+               <th>Site organisateur</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for sortie in sorties %}
+                <tr>
+                    <td>{{ sortie.nomSortie }}</td>
+                    <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
+                    <td>{{ sortie.dateLimiteInscription|date('d/m/Y') }}</td>
+                    <td>{{ sortie.nbInscriptionsMax }}</td> {# TODO nao : rajouter les participants dans la case #}
+                    <td>{{ sortie.libelle }}</td>
+                    {# TODO nao : rajouter case si on y est inscrit #}
+                    <td> </td>
+                    {# TODO nao : rajouter organisateur #}
+                    <td><a>  {{ sortie.organisateur_prenom|capitalize}} {{ sortie.organisateur_nom|slice(0, 1) |capitalize}}.</a></td>
+
+                    <td> {{ sortie.nomSite }} </td>
+
+                    <td>
+                        <a> <button type="submit"> Afficher</button> </a> -
+                        <a> <button type="submit"> S'inscrire</button></a> -
+                        <a><button type="submit">se désister</button></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    <button type="submit">Créer une sortie</button>
 
 {% endblock %}
