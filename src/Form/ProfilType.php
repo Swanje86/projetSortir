@@ -29,7 +29,9 @@ class ProfilType extends AbstractType
                 'label' => 'Téléphone',
             ])
             ->add('mail')
-            ->add('motDePasse', PasswordType::class,[
+
+            ->add('password', PasswordType::class,[
+                'label' => 'Mot de passe',
                 'required' => true,
             ])
             ->add('confirmation', PasswordType::class,[
@@ -40,13 +42,12 @@ class ProfilType extends AbstractType
             ->add('site', EntityType::class, [
                 'class' => Site::class,
                 'choice_label' => 'nomSite',
-                'placeholder' => '-- Choisissez un site --',
                 'required' => true,
 
             ])
             ->add('photo', FileType::class, [
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '1024k',
