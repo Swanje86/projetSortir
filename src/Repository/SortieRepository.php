@@ -72,13 +72,20 @@ class SortieRepository extends ServiceEntityRepository
     public function findSomeFields()
     {
         return $this->createQueryBuilder('s')
-
-            ->join('s.organisateur', 'o')
+           ->join('s.etat', 'e')
             ->join('s.siteOrganisateur','l')
-            ->select('s.nomSortie', 's.dateHeureDebut', 's.dateLimiteInscription', 's.nbInscriptionsMax', 'o.prenom as organisateur_prenom','o.nom as organisateur_nom', 'l.nomSite')
+          // ->join('s.participant', 'p') // Join the participant field with alias 'p'*/
+           //->join('s.organisateur', 'o') // Join the participant field with alias 'p'*/
+
+              ->join('s.organisateur', 'p')
+
+            ->select('s.nomSortie', 's.dateHeureDebut', 's.dateLimiteInscription', 's.nbInscriptionsMax','e.libelle', 'l.nomSite','p.prenom','p.nom')
             ->getQuery()
             ->getResult();
     }
+
+
+
 
     // Cette méthode retourne toutes les sorties dont le nom contient un terme de recherche spécifique.
     public function findSortieBySearchTerm(string $term)

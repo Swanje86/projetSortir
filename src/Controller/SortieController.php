@@ -9,6 +9,7 @@ use App\Form\SortieType;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,8 +18,9 @@ use Symfony\Component\Routing\Attribute\Route;
 class SortieController extends AbstractController
 {
     #[Route('/sortie', name: 'app_sortie')]
-    public function affichage_sorties(Request $request, EntityManagerInterface $em): Response
+    public function affichage_sorties(Request $request, EntityManagerInterface $em, Security $security): Response
     {
+        $participant = $security->getUser();
 
         // Création d'une nouvelle instance de Sortie
         $sortie = new Sortie();
@@ -36,16 +38,18 @@ class SortieController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Récupération des données du formulaire
             $data = $form->getData();
-
+//var_dump($data);
             // Utilisation des données du formulaire pour modifier la requête qui récupère les sorties à afficher
             $sorties = $em->getRepository(Sortie::class)->findSortiesWithFilters($sortie, $searchTerm);
         } else {
             // Si le formulaire n'est pas soumis, affichez toutes les sorties
             $sorties = $em->getRepository(Sortie::class)->findSomeFields();
         }
-
+        //dump($sorties);
+       // var_dump($sorties);
         // Rendu du template avec les données nécessaires
         return $this->render('sortie/index.html.twig', [
+            'participant' => $participant,
             'controller_name' => 'SortieController',
             'dateTime' => (new \DateTime())->format('d/m/Y'),
             'form' => $form->createView(),

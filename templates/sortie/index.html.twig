@@ -52,20 +52,20 @@
     {# TODO nao : beug sur la page d'accueil  #}
             {# quand on charge la page direct via url ça met erreur alors que quand on est deja dedans ça focntionne  #}
             {% for sortie in sorties %}
-{#                {{ dump(sortie) }}#}
+
                 <tr>
                     <td>{{ sortie.nomSortie }}</td>
                     <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
                     <td>{{ sortie.dateLimiteInscription|date('d/m/Y') }}</td>
-                    <td>{{ sortie.nbInscriptionsMax }}</td> {# TODO nao : rajouter les participants dans la case #}
-                    <td>{{ sortie.etat.libelle }}</td>
+                    <td>/{{ sortie.nbInscriptionsMax }}</td> {# TODO nao : rajouter les participants dans la case #}
+                    <td> {{ sortie.libelle }}</td>
                     {# TODO nao : rajouter case si on y est inscrit #}
                     <td> </td>
                     {# TODO nao : rajouter organisateur #}
-                    <td>{% for participant in sortie.participant %}
-                            {{ participant.organisateur_prenom|capitalize }} {{ participant.organisateur_nom|slice(0, 1) |capitalize }}.
-                        {% endfor %}</td>
-                    <td> {{ sortie.siteOrganisateur.nomSite }} </td>
+                    <td>
+                   {{ sortie.prenom|capitalize }} {{ sortie.nom|slice(0, 1) |capitalize }}.
+                    </td>
+                    <td> {{ sortie.nomSite }} </td>
 
                     <td>
                         <a> <button type="submit"> Afficher</button> </a> -
