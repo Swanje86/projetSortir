@@ -20,27 +20,91 @@ class SortieType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-
             ->add('siteOrganisateur', EntityType::class, [
                 'class' => Site::class,
                 'choice_label' => 'nomSite',
+                'label'=> false,
+                'choice_value' => function (?Site $site) {
+                    return $site ? $site->getId() : '';
+                }
             ])
-
             ->add('searchTerm', TextType::class, [
                 'required' => false,
+                'label'=> false,
                 'mapped' => false, //false comme pas en lien avec l'entity Sortie
             ])
             ->add('dateStartFilter', DateType::class, [
                 'required' => false,
+                'label'=> false,
                 'widget' => 'single_text',
                 'mapped'=> false,//false comme pas en lien avec l'entity Sortie
             ])
             ->add('dateEndFilter', DateType::class, [
-            'required' => false,
-            'widget' => 'single_text',
-            'mapped'=> false,//false comme pas en lien avec l'entity Sortie
-    ]);
-        ;
+                'required' => false,
+                'label'=> false,
+                'widget' => 'single_text',
+                'mapped'=> false,//false comme pas en lien avec l'entity Sortie
+            ])
+            ->add('conditions', ChoiceType::class, [
+                'choices'  => [
+                    "Sorties dont je suis l'organisateur / trice" => "cdt1",
+                    "Sorties auxquelles je suis inscrit/e" => "cdt2",
+                    "Sorties auxquelles je ne suis pas inscrit/e" => "cdt3",
+                    "Sorties passées" => "cdt4",
+                ],
+                'label'=> false,
+                'multiple' => true,
+                'expanded' => true,
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'class' => 'checkbox-vertical'
+                ]
+            ]);
+
+
+
+           /* ->add('siteOrganisateur', EntityType::class, [
+                'class' => Site::class,
+                'label'=> false,
+                'choice_label' => 'nomSite',
+                'choice_value' => function (?Site $site) {
+                    return $site ? $site->getId() : '';
+                }
+            ])
+            ->add('searchTerm', TextType::class, [
+                'required' => false,
+                'label'=> false,
+                'mapped' => false, //false comme pas en lien avec l'entity Sortie
+            ])
+            ->add('dateStartFilter', DateType::class, [
+                'required' => false,
+                'label'=> false,
+                'widget' => 'single_text',
+                'mapped'=> false,//false comme pas en lien avec l'entity Sortie
+            ])
+            ->add('dateEndFilter', DateType::class, [
+                'required' => false,
+                'label'=> false,
+                'widget' => 'single_text',
+                'mapped'=> false,//false comme pas en lien avec l'entity Sortie
+            ])
+            ->add('conditions', ChoiceType::class, [
+                'choices'  => [
+                    "Sorties dont je suis l'organisateur / trice" => "cdt1",
+                    "Sorties auxquelles je suis inscrit/e" => "cdt2",
+                    "Sorties auxquelles je ne suis pas inscrit/e" => "cdt3",
+                    "Sorties passées" => "cdt4",
+                ],
+                'label'=> false,
+                'multiple' => true,
+                'expanded' => true,
+                'mapped' => false,
+                'required' => false,
+                'attr' => [
+                    'class' => 'checkbox-vertical'
+                ]
+            ]);*/
     }
 
     public function configureOptions(OptionsResolver $resolver): void

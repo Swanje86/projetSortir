@@ -208,4 +208,40 @@ class Sortie
 
         return $this;
     }
+
+
+
+    //modif pour faire fonctionner les filtres page affichage sorties
+
+
+    private $dateStartFilter;
+
+    public function getDateStartFilter(): ?\DateTimeInterface
+    {
+        return $this->dateStartFilter;
+    }
+
+    public function setDateStartFilter(?\DateTimeInterface $dateStartFilter): self
+    {
+        $this->dateStartFilter = $dateStartFilter;
+
+        return $this;
+    }
+
+    private $dateEndFilter;
+
+    public function getDateEndFilter(): ?\DateTimeInterface
+    {
+        return $this->dateEndFilter;
+    }
+
+    public function setDateEndFilter(?\DateTimeInterface $dateEndFilter): self
+    {
+        $this->dateEndFilter = $dateEndFilter;
+
+        return $this;
+    }
+
+
+
 }
