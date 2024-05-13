@@ -10,26 +10,72 @@
     </div>
 
 
+<!--Zone de filtre-->
 
-    <div class="zone2">
         <div class="row">
             <div class="col-md-4">
                 <h4>Filtrer les sorties</h4>
                 {{ form_start(form) }}
-                <p>Site : </p>
-                {{ form_row(form.siteOrganisateur) }}
-                <p>Le nom de la sortie contient : </p> {# TODO Nao : verifier que ça fonctionne bien #}
-                {{ form_row(form.searchTerm) }}
+                <p>Site : {{ form_row(form.siteOrganisateur) }}</p>
+
+                <p>Le nom de la sortie contient : {{ form_row(form.searchTerm) }}</p> {# TODO Nao : verifier que ça fonctionne bien #}
+                <p>Entre {{ form_row(form.dateStartFilter) }} et  {{ form_row(form.dateEndFilter) }}</p>
 
             </div>
             <div class="col-md-4">
-                <!-- Content for the second part -->
+                {{form_row(form.conditions)}}
             </div>
             <div class="col-md-4">
                <button type="submit">Rechercher</button>
                 {{ form_end(form) }}
             </div>
         </div>
-    </div>
+
+
+<!-- zone d'affichage des sorties-->
+        <table class="table table-success table-striped table-bordered">
+            <thead>
+            <tr>
+               <th>Nom de la sortie</th>
+               <th>Date</th>
+               <th>Clôture</th>
+               <th>Inscrits/places</th>
+               <th>Etat</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
+               <th>Site organisateur</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {# TODO nao : est ce qu'il faut que les filtres soient indépendants les un des autres ? site et rechereche par mot vont ensemble par ex#}
+    {# TODO nao : beug sur la page d'accueil  #}
+            {# quand on charge la page direct via url ça met erreur alors que quand on est deja dedans ça focntionne  #}
+            {% for sortie in sorties %}
+{#                {{ dump(sortie) }}#}
+                <tr>
+                    <td>{{ sortie.nomSortie }}</td>
+                    <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
+                    <td>{{ sortie.dateLimiteInscription|date('d/m/Y') }}</td>
+                    <td>{{ sortie.nbInscriptionsMax }}</td> {# TODO nao : rajouter les participants dans la case #}
+                    <td>{{ sortie.etat.libelle }}</td>
+                    {# TODO nao : rajouter case si on y est inscrit #}
+                    <td> </td>
+                    {# TODO nao : rajouter organisateur #}
+                    <td>{% for participant in sortie.participant %}
+                            {{ participant.organisateur_prenom|capitalize }} {{ participant.organisateur_nom|slice(0, 1) |capitalize }}.
+                        {% endfor %}</td>
+                    <td> {{ sortie.siteOrganisateur.nomSite }} </td>
+
+                    <td>
+                        <a> <button type="submit"> Afficher</button> </a> -
+                        <a> <button type="submit"> S'inscrire</button></a> -
+                        <a><button type="submit">se désister</button></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    <button type="submit">Créer une sortie</button>
 
 {% endblock %}
