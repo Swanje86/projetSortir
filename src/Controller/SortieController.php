@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Participant;
 use App\Entity\Site;
 use App\Entity\Sortie;
+use App\Entity\Ville;
+use App\Form\CreateSortieType;
 use App\Form\ProfilType;
 use App\Form\SortieType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -67,5 +69,33 @@ SortieController extends AbstractController
         ]);
 
 
+    }
+
+    #[Route('/create', name :'app_create')]
+    public function create_Sortie(Request $request, EntityManagerInterface $entityManager, Security $security): Response
+    {
+        $participant = $security->getUser();
+
+        $createSortie = new Sortie();
+        $form = $this->createForm(CreateSortieType::class, $createSortie);
+        $form->handleRequest($request);
+
+        $villes = $entityManager->getRepository(Ville::class)->findAll();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($createSortie);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Une sortie a bien été créée !');
+
+            return $this->redirectToRoute('app_sortie');
+        }
+
+        return $this->render('sortie/create.html.twig', [
+            'sortie_form' => $form,
+            'ville' => $villes,
+            'participant' => $participant,
+
+        ]);
     }
 }

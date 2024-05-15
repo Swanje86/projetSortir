@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Sortir.com{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <link rel="icon" href="{{ asset('images/Logo.png') }}">
         <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&family=Manrope:wght@200;300;400;500;600;700;800&family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
         {% block javascripts %}
@@ -21,7 +21,7 @@
 
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <a class="navbar-brand fs-1" href="#">Logo Sortir.com</a>
+                <a class="navbar-brand fs-1" href="{{ path ('app_sortie') }}"><img src="{{  asset('images/Logo.png') }}"> Sortir.com</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -83,10 +83,10 @@
                     <h6>Sommaire</h6><!-- Content for the third section goes here -->
                         <ul>
                         {# TODO : changer les liens pour les bons #}
-                            <li> <a href="#"> accueil</a></li>
+                            <li> <a href="{{ path ('app_sortie') }}"> accueil</a></li>
                             <li> <a href="#"> Villes</a></li>
                             <li> <a href="#"> Sites</a></li>
-                            <li> <a href="#"> Mon profil</a></li>
+                            <li> <a href="{{ path ('app_Profil', {'id' : participant.id}) }}"> Mon profil</a></li>
                         </ul>
                 </div>
             </div>
