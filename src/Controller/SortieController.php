@@ -13,6 +13,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -23,6 +24,7 @@ class SortieController extends AbstractController
     public function affichage_sorties(Request $request, EntityManagerInterface $em, Security $security): Response
     {
         $participant = $security->getUser();
+
 
         // Création d'une nouvelle instance de Sortie
         $sortie = new Sortie();
@@ -52,6 +54,7 @@ class SortieController extends AbstractController
         // Rendu du template avec les données nécessaires
         return $this->render('sortie/index.html.twig', [
             'participant' => $participant,
+
             'controller_name' => 'SortieController',
             'dateTime' => (new \DateTime())->format('d/m/Y'),
             'form' => $form->createView(),
@@ -69,6 +72,50 @@ class SortieController extends AbstractController
             'sortie' => $sortie,
             'participant' => $participant,
         ]);
+    }
+
+    /**
+     * @Route("/sortie/{id}/inscription", name="sortie_inscription", methods={"POST"})
+     */
+    #[Route('/sortie/{id}/inscription', name: 'app_sortie_inscription', methods:['POST'])]
+    public function inscription(Sortie $sortie, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $participant = $this->getUser();
+        if (!$participant instanceof Participant) {
+            return new JsonResponse(['status' => 'error', 'message' => 'User not found or not a participant'], 400);
+        }
+
+        if (!$sortie->getParticipant()->contains($participant)) {
+            $sortie->addParticipant($participant);
+            $entityManager->persist($sortie);
+
+            $entityManager->flush();
+            return new JsonResponse(['status' => 'inscrit'], 200);
+        }
+
+        return new JsonResponse(['status' => 'already_inscrit'], 400);
+    }
+
+    /**
+     *
+     * @Route("/sortie/{id}/desinscription", name="sortie_desinscription", methods={"POST"})
+     */
+    #[Route('/sortie/{id}/desistement', name: 'app_sortie_desistement', methods:['POST'])]
+    public function desistement(Sortie $sortie, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $participant = $this->getUser();
+        if (!$participant instanceof Participant) {
+            return new JsonResponse(['status' => 'error', 'message' => 'User not found or not a participant'], 400);
+        }
+
+        if ($sortie->getParticipant()->contains($participant)) {
+            $sortie->removeParticipant($participant);
+            $entityManager->persist($sortie);
+            $entityManager->flush();
+            return new JsonResponse(['status' => 'desinscrit'], 200);
+        }
+
+        return new JsonResponse(['status' => 'not_inscrit'], 400);
     }
 
 

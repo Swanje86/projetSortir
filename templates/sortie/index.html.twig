@@ -69,9 +69,59 @@
 
                     <td>
                         <a href="{{ path('app_sortie_details',{'id' : sortie.id}) }}"> <button type="submit"> Afficher </button></a>
-                        <a><button type="submit"> S'inscrire </button></a>
-                        <a><button type="submit"> Se désister </button></a>
+
+                            <a><button type="button" onclick="inscription({{ sortie.id }})"> S'inscrire </button></a>
+
+                            <a><button type="button" onclick="desistement({{ sortie.id }})"> Se désister </button></a>
+
                     </td>
+                    <script>
+                        function inscription(sortieId) {
+                            fetch('/sortie/' + sortieId + '/inscription', {
+                                method: 'POST',
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({})
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    if (data.status === 'inscrit') {
+                                        alert('Inscription réussie!');
+                                    } else if (data.status === 'already_inscrit') {
+                                        alert('Vous êtes déjà inscrit.');
+                                    } else {
+                                        alert('Erreur: ' + data.message);
+                                    }
+                                })
+                                .catch(error => console.error('Error:', error));
+                        }
+
+                        function desistement(sortieId) {
+                            fetch('/sortie/' + sortieId + '/desistement', {
+                                method: 'POST',
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({})
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+
+                                    if (data.status === 'desinscrit') {
+                                        alert ('Etes-vous sûr de vouloir vous désincrire ??');
+                                        alert('Désinscription réussie!');
+                                    } else if (data.status === 'not_inscrit') {
+                                        alert('Vous n\'êtes pas inscrit.');
+                                    } else {
+                                        alert('Erreur: ' + data.message);
+                                    }
+                                })
+                                .catch(error => console.error('Error:', error));
+                        }
+                    </script>
                 </tr>
             {% endfor %}
         </table>
