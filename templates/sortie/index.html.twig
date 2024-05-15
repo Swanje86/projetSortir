@@ -68,9 +68,9 @@
                     <td> {{ sortie.nomSite }} </td>
 
                     <td>
-                        <a> <button type="submit"> Afficher</button> </a> -
-                        <a> <button type="submit"> S'inscrire</button></a> -
-                        <a><button type="submit">se désister</button></a>
+                        <a href="{{ path('app_sortie_details',{'id' : sortie.id}) }}"> <button type="submit"> Afficher </button></a>
+                        <a><button type="submit"> S'inscrire </button></a>
+                        <a><button type="submit"> Se désister </button></a>
                     </td>
                 </tr>
             {% endfor %}

@@ -6,7 +6,9 @@ use App\Entity\Participant;
 use App\Entity\Site;
 use App\Entity\Sortie;
 use App\Form\SortieType;
+use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping as ORM;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -46,7 +48,7 @@ class SortieController extends AbstractController
             $sorties = $em->getRepository(Sortie::class)->findSomeFields();
         }
         //dump($sorties);
-       // var_dump($sorties);
+        // var_dump($sorties);
         // Rendu du template avec les données nécessaires
         return $this->render('sortie/index.html.twig', [
             'participant' => $participant,
@@ -56,8 +58,18 @@ class SortieController extends AbstractController
             'sorties' => $sorties,
         ]);
 
+    }
 
+    #[Route('/details/{id}', name: 'app_sortie_details', requirements: ['id' => '\d+'] )]
+    public function sortieDetails (Sortie $sortie, Security $security): Response
+    {
+        $participant = $security->getUser();
 
+        return $this->render('sortie/details.html.twig', [
+            'sortie' => $sortie,
+            'participant' => $participant,
+        ]);
+    }
 
 
 
@@ -149,15 +161,17 @@ class SortieController extends AbstractController
             ]);*/
 
 
-/*
-        //si le form n'est pas valide ou pas soumis, renvoi le template avec le form <-- pour les methodes qui ne font pas parties de l'entity
-        return $this->render('sortie/index.html.twig', [
-            'controller_name' => 'SortieController',
-            'dateTime' => (new \DateTime())->format('d/m/Y'),
-            'form' => $form->createView(),
-        ]);*/
+        /*
+                //si le form n'est pas valide ou pas soumis, renvoi le template avec le form <-- pour les methodes qui ne font pas parties de l'entity
+                return $this->render('sortie/index.html.twig', [
+                    'controller_name' => 'SortieController',
+                    'dateTime' => (new \DateTime())->format('d/m/Y'),
+                    'form' => $form->createView(),
+                ]);
 
 
-    }
+    }*/
 
 }
+
+
