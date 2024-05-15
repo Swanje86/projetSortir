@@ -261,7 +261,16 @@ class Sortie
 
         return $this;
     }
+    public function getConditions()
+    {
+        return $this->conditions;
+    }
+    public function setConditions(mixed $condition)
+    {
+        $this->conditions = $condition;
 
+        return $this;
+    }
 
 
 }

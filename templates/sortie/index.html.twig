@@ -11,15 +11,23 @@
 
 
 <!--Zone de filtre-->
-
+    <!--Zone 1-->
         <div class="row">
             <div class="col-md-4">
                 <h4>Filtrer les sorties</h4>
                 {{ form_start(form) }}
-                <p>Site : {{ form_row(form.siteOrganisateur,{'id': 'form_siteOrganisateur'}) }}</p>
+                <div class="d-flex align-items-center">
+                    <p>Site : </p> <span class="spacer"> </span>{{ form_row(form.siteOrganisateur,{'id': 'form_siteOrganisateur'}) }}
+                </div>
+                    <p>Le nom de la sortie contient : {{ form_row(form.searchTerm,{'id': 'form_searchTerm'}) }}</p>
 
-                <p>Le nom de la sortie contient : {{ form_row(form.searchTerm,{'id': 'form_searchTerm'}) }}</p> {# TODO Nao : verifier que ça fonctionne bien #}
-                <p>Entre {{ form_row(form.dateStartFilter,{'id': 'form_dateStartFilter'}) }} et  {{ form_row(form.dateEndFilter,{'id': 'form_dateEndFilter'}) }}  </p>
+                <div class="d-flex align-items-center">
+                    <p class="mb-0">Entre</p>
+                    <div>{{ form_row(form.dateStartFilter,{'id': 'form_dateStartFilter'}) }}</div>
+                    <p class="mb-0">et</p>
+                    <div>{{ form_row(form.dateEndFilter,{'id': 'form_dateEndFilter'}) }}</div>
+                </div>
+
                 <button type="button" id="resetDateRange">
                     <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
                         <metadata>Created by potrace 1.10, written by Peter Selinger 2001-2011</metadata>
@@ -35,15 +43,14 @@
                     </svg>
                     Reset date
                 </button>
-
-
             </div>
+            <!--Zone 2-->
             <div class="col-md-4">
                 {{form_row(form.conditions,{'id': 'form_conditions'})}}
             </div>
+            <!--Zone 3-->
             <div class="col-md-4">
                <button type="submit">Rechercher</button>
-{#                {{ form_widget(form.reset) }}#}
                 <button type="button" id="resetFilters">
                     <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
                         <metadata>Created by potrace 1.10, written by Peter Selinger 2001-2011</metadata>
@@ -84,11 +91,25 @@
                     <td>{{ sortie.nomSortie }}</td>
                     <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
                     <td>{{ sortie.dateLimiteInscription|date('d/m/Y') }}</td>
-                    <td>{#{{ participantCounts[sortie.id] ?? 0 }}#}
-                        /{{ sortie.nbInscriptionsMax }}</td> {# TODO nao : rajouter les participants dans la case #}
+                    <td>
+                        {{ participantCounts[sortie.id] ?? 0 }}/{{ sortie.nbInscriptionsMax }}</td>
                     <td> {{ sortie.etat.libelle }}</td>
-                    {# TODO nao : rajouter case si on y est inscrit #}
-                    <td> </td>
+
+                    <td>
+                        <!-- verifie si on est participant de la sortie-->
+                        {% set isParticipantInSortie = false %}
+                        {% for sortieParticipant in sortie.participant %}
+                            {% if participant.id == sortieParticipant.id %}
+                                {% set isParticipantInSortie = true %}
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if isParticipantInSortie %}
+                            oui
+                        {% else %}
+                            non
+                        {% endif %}
+                    </td>
                     {# TODO nao : rajouter organisateur #}
                     <td>
                    {{ sortie.organisateur.prenom|capitalize }} {{ sortie.organisateur.nom|slice(0, 1) |capitalize }}.
@@ -180,8 +201,11 @@
     document.getElementById('form_searchTerm').value = '';
     document.getElementById('form_dateStartFilter').value = '';
     document.getElementById('form_dateEndFilter').value = '';
-    document.getElementById('form_conditions').value = '';
-
+// Reset the 'conditions' checkboxes
+        var conditionsCheckboxes = document.querySelectorAll('#form_conditions input[type="checkbox"]');
+        conditionsCheckboxes.forEach(function(checkbox) {
+            checkbox.checked = false;
+        });
     // Soumettre le formulaire
     document.getElementById('form_sortie').submit();
     });

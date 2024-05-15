@@ -25,7 +25,6 @@ class SortieController extends AbstractController
     {
         $participant = $security->getUser();
 
-
         // Création d'une nouvelle instance de Sortie
         $sortie = new Sortie();
 
@@ -46,6 +45,7 @@ class SortieController extends AbstractController
             $searchTerm = $form->get('searchTerm')->getData();
             $dateStartFilter = $form->get('dateStartFilter')->getData();
             $dateEndFilter = $form->get('dateEndFilter')->getData();
+            $condition = $form->get('conditions')->getData();
 
             // Create a filters object and set its properties
             $filters = new Sortie();
@@ -53,21 +53,24 @@ class SortieController extends AbstractController
             $filters->setSearchTerm($searchTerm);
             $filters->setDateStartFilter($dateStartFilter);
             $filters->setDateEndFilter($dateEndFilter);
+            $filters->setConditions($condition);
 
+
+            $participantId = $this->getUser()->getId();
             // Utilisation des données du formulaire pour modifier la requête qui récupère les sorties à afficher
-            $sorties = $em->getRepository(Sortie::class)->findSortiesWithFilters($filters);
-
-            //test code
-/*
-            $dateStartFilterTest = new \DateTime('2024-10-07');
-            $dateEndFilterTest = new \DateTime('2024-10-18');
-            $testSorties = $em->getRepository(Sortie::class)->findSortieByDateRange($dateStartFilterTest, $dateEndFilterTest);
-            dump($testSorties);*/
+            $sorties = $em->getRepository(Sortie::class)->findSortiesWithFilters($filters, $participantId);
 
         } else {
             // Si le formulaire n'est pas soumis, affichez toutes les sorties
             $sorties = $em->getRepository(Sortie::class)->findSomeFields();
+
         }
+        // Comptage des participant à une sortie
+        $participantCounts = [];
+        foreach($sorties as $sortie) {
+            $participantCounts[$sortie->getId()] = count($sortie->getParticipant());
+        }
+
 
         // Rendu du template avec les données nécessaires
         return $this->render('sortie/index.html.twig', [
@@ -76,14 +79,13 @@ class SortieController extends AbstractController
             'dateTime' => (new \DateTime())->format('d/m/Y'),
             'form' => $form->createView(),
             'sorties' => $sorties,
+            'participantCounts' => $participantCounts,
         ]);
 
     }
 
-    #[Route('/details/{id}', name: 'app_sortie_details', requirements: ['id' => '\d+'] )]
-    public function sortieDetails (Sortie $sortie, Security $security): Response
-    {
-        $participant = $security->getUser();
+        /*// Création d'une nouvelle instance de Sortie
+        $sortie = new Sortie();
 
         return $this->render('sortie/details.html.twig', [
             'sortie' => $sortie,
