@@ -58,3 +58,8 @@ footer{
     display: block;
 
 }
+
+svg{
+    width: 10vw;
+    height: 10vh;
+}

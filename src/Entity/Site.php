@@ -21,6 +21,7 @@ class Site
         return $this->id;
     }
 
+
     public function getNomSite(): ?string
     {
         return $this->nomSite;

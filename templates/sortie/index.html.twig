@@ -16,17 +16,48 @@
             <div class="col-md-4">
                 <h4>Filtrer les sorties</h4>
                 {{ form_start(form) }}
-                <p>Site : {{ form_row(form.siteOrganisateur) }}</p>
+                <p>Site : {{ form_row(form.siteOrganisateur,{'id': 'form_siteOrganisateur'}) }}</p>
 
-                <p>Le nom de la sortie contient : {{ form_row(form.searchTerm) }}</p> {# TODO Nao : verifier que ça fonctionne bien #}
-                <p>Entre {{ form_row(form.dateStartFilter) }} et  {{ form_row(form.dateEndFilter) }}</p>
+                <p>Le nom de la sortie contient : {{ form_row(form.searchTerm,{'id': 'form_searchTerm'}) }}</p> {# TODO Nao : verifier que ça fonctionne bien #}
+                <p>Entre {{ form_row(form.dateStartFilter,{'id': 'form_dateStartFilter'}) }} et  {{ form_row(form.dateEndFilter,{'id': 'form_dateEndFilter'}) }}  </p>
+                <button type="button" id="resetDateRange">
+                    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+                        <metadata>Created by potrace 1.10, written by Peter Selinger 2001-2011</metadata>
+                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+                            <path d="M2028 5109 c-442 -47 -849 -214 -1193 -490 -96 -77 -278 -259 -320 -319 -67 -97 -12 -211 102 -210 21 1 47 6 59 13 12 7 72 65 134 130 185 193 345 310 575 422 548 268 1181 268 1730 0 141 -68 267 -148 384 -241 l74 -59 -120 -5 c-90 -4 -125 -9 -146 -23 -69 -45 -76 -147 -13 -204 l36 -33 295 0 c322 0 334 2 371 57 18 26 19 50 19 323 0 273 -1 297 -19 323 -56 83 -194 72 -232 -18 -9 -22 -14 -69 -14 -130 l0 -96 -82 68 c-284 231 -653 402 -1003 463 -220 39 -448 49 -637 29z"/>
+                            <path d="M2171 3449 c-220 -38 -356 -233 -295 -425 14 -45 31 -72 74 -115 49 -50 69 -62 185 -108 178 -70 237 -101 255 -133 13 -25 13 -29 -6 -55 -33 -45 -80 -65 -149 -61 -70 4 -129 30 -199 88 -42 35 -55 40 -98 40 -43 0 -54 -4 -83 -33 -39 -39 -50 -72 -41 -122 14 -75 135 -168 272 -211 73 -23 97 -26 186 -22 90 3 112 8 170 35 82 39 151 105 186 181 39 82 39 194 -1 273 -32 66 -104 137 -173 172 -27 13 -109 48 -182 77 -73 28 -136 59 -141 68 -13 26 4 59 40 78 50 25 135 14 207 -27 131 -75 262 -11 238 117 -22 114 -264 214 -445 183z"/>
+                            <path d="M57 3430 c-58 -46 -57 -37 -57 -560 0 -523 -1 -514 56 -559 33 -26 104 -28 144 -5 50 30 60 60 60 188 0 64 4 116 8 116 5 0 64 -63 132 -140 150 -172 160 -180 217 -180 79 0 133 51 133 127 0 48 -16 73 -139 212 l-100 115 52 28 c73 40 113 83 150 158 29 59 32 73 32 160 0 84 -3 102 -28 151 -34 70 -109 142 -185 177 -55 26 -65 27 -252 30 -188 3 -197 2 -223 -18z m384 -263 c47 -31 61 -86 33 -125 -33 -43 -80 -63 -149 -60 l-60 3 -3 89 c-2 49 -1 95 2 103 4 9 26 13 74 13 55 0 76 -5 103 -23z"/>
+                            <path d="M1039 3433 c-60 -37 -59 -25 -59 -563 0 -437 2 -495 16 -520 34 -57 50 -60 307 -60 222 0 236 1 261 21 80 63 71 180 -17 222 -27 13 -65 17 -171 17 l-136 0 0 95 0 95 125 0 c142 0 173 10 205 63 25 41 25 93 0 134 -32 53 -63 63 -205 63 l-125 0 0 95 0 95 138 0 c156 0 192 11 224 71 32 60 18 124 -38 168 -25 20 -38 21 -263 21 -200 0 -240 -3 -262 -17z"/>
+                            <path d="M2943 3430 c-64 -39 -63 -29 -63 -562 0 -461 1 -484 20 -515 36 -59 54 -63 305 -63 245 0 266 4 299 56 23 34 24 105 2 139 -36 55 -68 65 -218 65 l-138 0 0 95 0 95 120 0 c79 0 132 5 153 14 64 26 92 106 61 171 -30 64 -60 75 -206 75 l-128 0 0 95 0 95 138 0 c150 0 182 10 218 65 22 34 21 105 -2 139 -34 52 -54 56 -301 56 -208 0 -231 -2 -260 -20z"/>
+                            <path d="M3799 3433 c-58 -36 -77 -119 -39 -180 27 -45 54 -56 145 -63 l80 -5 5 -410 c4 -331 8 -414 19 -431 36 -54 120 -70 179 -34 61 37 62 47 62 485 l0 395 73 0 c86 0 132 20 159 71 32 60 18 124 -38 168 -26 20 -37 21 -323 21 -256 0 -300 -3 -322 -17z"/>
+                            <path d="M529 1635 c-14 -8 -35 -27 -45 -42 -17 -25 -19 -53 -22 -302 -3 -238 -1 -281 14 -319 40 -105 189 -111 237 -9 12 25 17 62 17 131 l0 97 93 -74 c607 -487 1412 -625 2151 -370 332 114 693 354 923 613 100 112 114 148 84 214 -12 28 -31 50 -50 60 -36 19 -97 20 -127 3 -11 -7 -74 -68 -140 -136 -353 -368 -780 -569 -1296 -612 -473 -39 -988 121 -1370 425 -42 33 -77 64 -78 69 0 4 45 7 100 7 118 0 160 14 190 62 33 52 23 122 -24 165 l-36 33 -297 0 c-238 -1 -303 -4 -324 -15z"/>
+                        </g>
+                    </svg>
+                    Reset date
+                </button>
+
 
             </div>
             <div class="col-md-4">
-                {{form_row(form.conditions)}}
+                {{form_row(form.conditions,{'id': 'form_conditions'})}}
             </div>
             <div class="col-md-4">
                <button type="submit">Rechercher</button>
+{#                {{ form_widget(form.reset) }}#}
+                <button type="button" id="resetFilters">
+                    <svg xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
+                        <metadata>Created by potrace 1.10, written by Peter Selinger 2001-2011</metadata>
+                        <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+                            <path d="M2028 5109 c-442 -47 -849 -214 -1193 -490 -96 -77 -278 -259 -320 -319 -67 -97 -12 -211 102 -210 21 1 47 6 59 13 12 7 72 65 134 130 185 193 345 310 575 422 548 268 1181 268 1730 0 141 -68 267 -148 384 -241 l74 -59 -120 -5 c-90 -4 -125 -9 -146 -23 -69 -45 -76 -147 -13 -204 l36 -33 295 0 c322 0 334 2 371 57 18 26 19 50 19 323 0 273 -1 297 -19 323 -56 83 -194 72 -232 -18 -9 -22 -14 -69 -14 -130 l0 -96 -82 68 c-284 231 -653 402 -1003 463 -220 39 -448 49 -637 29z"/>
+                            <path d="M2171 3449 c-220 -38 -356 -233 -295 -425 14 -45 31 -72 74 -115 49 -50 69 -62 185 -108 178 -70 237 -101 255 -133 13 -25 13 -29 -6 -55 -33 -45 -80 -65 -149 -61 -70 4 -129 30 -199 88 -42 35 -55 40 -98 40 -43 0 -54 -4 -83 -33 -39 -39 -50 -72 -41 -122 14 -75 135 -168 272 -211 73 -23 97 -26 186 -22 90 3 112 8 170 35 82 39 151 105 186 181 39 82 39 194 -1 273 -32 66 -104 137 -173 172 -27 13 -109 48 -182 77 -73 28 -136 59 -141 68 -13 26 4 59 40 78 50 25 135 14 207 -27 131 -75 262 -11 238 117 -22 114 -264 214 -445 183z"/>
+                            <path d="M57 3430 c-58 -46 -57 -37 -57 -560 0 -523 -1 -514 56 -559 33 -26 104 -28 144 -5 50 30 60 60 60 188 0 64 4 116 8 116 5 0 64 -63 132 -140 150 -172 160 -180 217 -180 79 0 133 51 133 127 0 48 -16 73 -139 212 l-100 115 52 28 c73 40 113 83 150 158 29 59 32 73 32 160 0 84 -3 102 -28 151 -34 70 -109 142 -185 177 -55 26 -65 27 -252 30 -188 3 -197 2 -223 -18z m384 -263 c47 -31 61 -86 33 -125 -33 -43 -80 -63 -149 -60 l-60 3 -3 89 c-2 49 -1 95 2 103 4 9 26 13 74 13 55 0 76 -5 103 -23z"/>
+                            <path d="M1039 3433 c-60 -37 -59 -25 -59 -563 0 -437 2 -495 16 -520 34 -57 50 -60 307 -60 222 0 236 1 261 21 80 63 71 180 -17 222 -27 13 -65 17 -171 17 l-136 0 0 95 0 95 125 0 c142 0 173 10 205 63 25 41 25 93 0 134 -32 53 -63 63 -205 63 l-125 0 0 95 0 95 138 0 c156 0 192 11 224 71 32 60 18 124 -38 168 -25 20 -38 21 -263 21 -200 0 -240 -3 -262 -17z"/>
+                            <path d="M2943 3430 c-64 -39 -63 -29 -63 -562 0 -461 1 -484 20 -515 36 -59 54 -63 305 -63 245 0 266 4 299 56 23 34 24 105 2 139 -36 55 -68 65 -218 65 l-138 0 0 95 0 95 120 0 c79 0 132 5 153 14 64 26 92 106 61 171 -30 64 -60 75 -206 75 l-128 0 0 95 0 95 138 0 c150 0 182 10 218 65 22 34 21 105 -2 139 -34 52 -54 56 -301 56 -208 0 -231 -2 -260 -20z"/>
+                            <path d="M3799 3433 c-58 -36 -77 -119 -39 -180 27 -45 54 -56 145 -63 l80 -5 5 -410 c4 -331 8 -414 19 -431 36 -54 120 -70 179 -34 61 37 62 47 62 485 l0 395 73 0 c86 0 132 20 159 71 32 60 18 124 -38 168 -26 20 -37 21 -323 21 -256 0 -300 -3 -322 -17z"/>
+                            <path d="M529 1635 c-14 -8 -35 -27 -45 -42 -17 -25 -19 -53 -22 -302 -3 -238 -1 -281 14 -319 40 -105 189 -111 237 -9 12 25 17 62 17 131 l0 97 93 -74 c607 -487 1412 -625 2151 -370 332 114 693 354 923 613 100 112 114 148 84 214 -12 28 -31 50 -50 60 -36 19 -97 20 -127 3 -11 -7 -74 -68 -140 -136 -353 -368 -780 -569 -1296 -612 -473 -39 -988 121 -1370 425 -42 33 -77 64 -78 69 0 4 45 7 100 7 118 0 160 14 190 62 33 52 23 122 -24 165 l-36 33 -297 0 c-238 -1 -303 -4 -324 -15z"/>
+                        </g>
+                    </svg>
+                    tous les filtres</button>
                 {{ form_end(form) }}
             </div>
         </div>
@@ -48,25 +79,22 @@
             </tr>
             </thead>
             <tbody>
-            {# TODO nao : est ce qu'il faut que les filtres soient indépendants les un des autres ? site et rechereche par mot vont ensemble par ex#}
-    {# TODO nao : beug sur la page d'accueil  #}
-            {# quand on charge la page direct via url ça met erreur alors que quand on est deja dedans ça focntionne  #}
             {% for sortie in sorties %}
-
                 <tr>
                     <td>{{ sortie.nomSortie }}</td>
                     <td>{{ sortie.dateHeureDebut|date('d/m/Y H:i') }}</td>
                     <td>{{ sortie.dateLimiteInscription|date('d/m/Y') }}</td>
-                    <td>/{{ sortie.nbInscriptionsMax }}</td> {# TODO nao : rajouter les participants dans la case #}
-                    <td> {{ sortie.libelle }}</td>
+                    <td>{#{{ participantCounts[sortie.id] ?? 0 }}#}
+                        /{{ sortie.nbInscriptionsMax }}</td> {# TODO nao : rajouter les participants dans la case #}
+                    <td> {{ sortie.etat.libelle }}</td>
                     {# TODO nao : rajouter case si on y est inscrit #}
                     <td> </td>
                     {# TODO nao : rajouter organisateur #}
                     <td>
-                   {{ sortie.prenom|capitalize }} {{ sortie.nom|slice(0, 1) |capitalize }}.
+                   {{ sortie.organisateur.prenom|capitalize }} {{ sortie.organisateur.nom|slice(0, 1) |capitalize }}.
                     </td>
-                    <td> {{ sortie.nomSite }} </td>
-
+                    <td> {{ sortie.siteOrganisateur.nomSite }} </td>
+{#todo nao gerer les droits buttons #}
                     <td>
                         <a href="{{ path('app_sortie_details',{'id' : sortie.id}) }}"> <button type="submit"> Afficher </button></a>
 
@@ -128,4 +156,34 @@
 
     <button type="submit">Créer une sortie</button>
 
+
+
+
+
+
+
+    <!-- Date range script-->
+   {# <script>
+        document.getElementById('resetDateRange').addEventListener('click', function() {
+            document.getElementById('form_dateStartFilter').value = '';
+            document.getElementById('form_dateEndFilter').value = '';
+
+            // Submit the form
+            document.getElementById('form_sortie').submit();
+        });
+    </script>
+#}
+<script>
+    document.getElementById('resetFilters').addEventListener('click', function() {
+    // Réinitialiser les filtres
+    document.getElementById('form_siteOrganisateur').value = '';
+    document.getElementById('form_searchTerm').value = '';
+    document.getElementById('form_dateStartFilter').value = '';
+    document.getElementById('form_dateEndFilter').value = '';
+    document.getElementById('form_conditions').value = '';
+
+    // Soumettre le formulaire
+    document.getElementById('form_sortie').submit();
+    });
+</script>
 {% endblock %}

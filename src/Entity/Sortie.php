@@ -56,6 +56,26 @@ class Sortie
     #[ORM\ManyToMany(targetEntity: Participant::class, inversedBy: 'sorties')]
     private Collection $participant;
 
+    private $searchTerm;
+
+    /**
+     * @return mixed
+     */
+    public function getSearchTerm()
+    {
+        return $this->searchTerm;
+    }
+
+    /**
+     * @param mixed $searchTerm
+     */
+    public function setSearchTerm($searchTerm): void
+    {
+        $this->searchTerm = $searchTerm;
+    }
+
+
+
     public function __construct()
     {
         $this->participant = new ArrayCollection();
