@@ -24,7 +24,6 @@ class SortieController extends AbstractController
     public function affichage_sorties(Request $request, EntityManagerInterface $em, Security $security): Response
     {
         $participant = $security->getUser();
-
         // Création d'une nouvelle instance de Sortie
         $sortie = new Sortie();
 
@@ -33,8 +32,6 @@ class SortieController extends AbstractController
 
         // Gestion des données du formulaire
         $form->handleRequest($request);
-
-
         //$searchTerm = $form->get('searchTerm')->getData();
 
 
@@ -70,8 +67,6 @@ class SortieController extends AbstractController
         foreach($sorties as $sortie) {
             $participantCounts[$sortie->getId()] = count($sortie->getParticipant());
         }
-
-
         // Rendu du template avec les données nécessaires
         return $this->render('sortie/index.html.twig', [
             'participant' => $participant,
@@ -81,11 +76,12 @@ class SortieController extends AbstractController
             'sorties' => $sorties,
             'participantCounts' => $participantCounts,
         ]);
-
     }
 
-        /*// Création d'une nouvelle instance de Sortie
-        $sortie = new Sortie();
+    #[Route('/details/{id}', name: 'app_sortie_details', requirements: ['id' => '\d+'] )]
+    public function sortieDetails (Sortie $sortie, Security $security): Response
+    {
+        $participant = $security->getUser();
 
         return $this->render('sortie/details.html.twig', [
             'sortie' => $sortie,
