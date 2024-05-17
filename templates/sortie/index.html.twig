@@ -70,9 +70,11 @@
                     <td>
                         <a href="{{ path('app_sortie_details',{'id' : sortie.id}) }}"> <button type="submit"> Afficher </button></a>
 
-                            <a><button type="button" onclick="inscription({{ sortie.id }})"> S'inscrire </button></a>
+                                 <a><button type="button" onclick="inscription({{ sortie.id }})"> S'inscrire </button></a>
+                            {% if sortie.dateLimiteInscription > "now"|date("Y-m-d H:i:s") %}
+                                <a><button type="button" onclick="desistement({{ sortie.id }})"> Se désister </button></a>
 
-                            <a><button type="button" onclick="desistement({{ sortie.id }})"> Se désister </button></a>
+                            {% endif %}
 
                     </td>
                     <script>

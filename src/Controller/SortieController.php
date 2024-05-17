@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class SortieController extends AbstractController
 {
     #[Route('/sortie', name: 'app_sortie')]
-    public function affichage_sorties(Request $request, EntityManagerInterface $em, Security $security): Response
+    public function affichage_sorties(Request $request, EntityManagerInterface $em, Security $security, Sortie $sortie): Response
     {
         $participant = $security->getUser();
 
@@ -42,23 +42,27 @@ class SortieController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Récupération des données du formulaire
             $data = $form->getData();
-//var_dump($data);
+            //var_dump($data);
             // Utilisation des données du formulaire pour modifier la requête qui récupère les sorties à afficher
-            $sorties = $em->getRepository(Sortie::class)->findSortiesWithFilters($sortie, $searchTerm);
+            $sorties = $em->getRepository(Sortie::class)->findSomeFields($sortie, $searchTerm);
         } else {
             // Si le formulaire n'est pas soumis, affichez toutes les sorties
-            $sorties = $em->getRepository(Sortie::class)->findSomeFields();
+            $sorties = $em->getRepository(Sortie::class)->findSomeFields(); // Utilisation de la nouvelle méthode pour inclure les participants
+
         }
+
         //dump($sorties);
         // var_dump($sorties);
         // Rendu du template avec les données nécessaires
         return $this->render('sortie/index.html.twig', [
             'participant' => $participant,
-
             'controller_name' => 'SortieController',
             'dateTime' => (new \DateTime())->format('d/m/Y'),
             'form' => $form->createView(),
             'sorties' => $sorties,
+            'sortie' => $sortie,
+
+
         ]);
 
     }
@@ -74,6 +78,7 @@ class SortieController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/sortie/{id}/inscription", name="sortie_inscription", methods={"POST"})
      */
@@ -85,7 +90,12 @@ class SortieController extends AbstractController
             return new JsonResponse(['status' => 'error', 'message' => 'User not found or not a participant'], 400);
         }
 
-        if (!$sortie->getParticipant()->contains($participant)) {
+        $now = new \DateTime();
+        if ($now > $sortie->getDateLimiteInscription()) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Trop tard ! La date limite d\'inscription est dépassée !' ], 400);
+        }
+
+        if (!$sortie->getParticipants()->contains($participant)) {
             $sortie->addParticipant($participant);
             $entityManager->persist($sortie);
 
@@ -108,7 +118,7 @@ class SortieController extends AbstractController
             return new JsonResponse(['status' => 'error', 'message' => 'User not found or not a participant'], 400);
         }
 
-        if ($sortie->getParticipant()->contains($participant)) {
+        if ($sortie->getParticipants()->contains($participant)) {
             $sortie->removeParticipant($participant);
             $entityManager->persist($sortie);
             $entityManager->flush();
@@ -116,13 +126,31 @@ class SortieController extends AbstractController
         }
 
         return new JsonResponse(['status' => 'not_inscrit'], 400);
+
     }
 
+    #[Route('/sortie/{id}/annulation', name: 'app_annulation', methods: ['POST'])]
+    public function annulation(Sortie $sortie, EntityManagerInterface $entityManager): JsonResponse
+    {
+        // Récupérer tous les participants de la sortie à annuler
+        $participants = $sortie->getParticipants();
 
+        // Supprimer tous les participants
+        foreach ($participants as $participant) {
+            $sortie->removeParticipant($participant);
+            // Supprimer le participant de la base de données si nécessaire
+            $entityManager->remove($participant);
+        }
 
+        // Supprimer la sortie elle-même
+        $entityManager->remove($sortie);
 
+        // Sauvegarder les modifications
+        $entityManager->flush();
 
-
+        // Renvoyer une réponse JSON pour indiquer que l'annulation a réussi
+        return new JsonResponse(['status' => 'success', 'message' => 'La sortie et ses participants ont été annulés avec succès.']);
+    }
 
 
         /*// Création d'une nouvelle instance de Sortie
