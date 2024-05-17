@@ -136,7 +136,7 @@ class SortieController extends AbstractController
             return new JsonResponse(['status' => 'error', 'message' => 'User not found or not a participant'], 400);
         }
 
-        if ($sortie->getParticipant()->contains($participant)) {
+        if ($sortie->getParticipants()->contains($participant)) {
             $sortie->removeParticipant($participant);
             $entityManager->persist($sortie);
             $entityManager->flush();
