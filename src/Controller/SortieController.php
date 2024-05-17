@@ -65,7 +65,6 @@ class SortieController extends AbstractController
         } else {
             // Si le formulaire n'est pas soumis, affichez toutes les sorties
             $sorties = $em->getRepository(Sortie::class)->findSomeFields();
-
         }
         // Comptage des participant à une sortie
         $participantCounts = [];
@@ -80,6 +79,7 @@ class SortieController extends AbstractController
             'form' => $form->createView(),
             'sorties' => $sorties,
             'participantCounts' => $participantCounts,
+            'sortie' => $sortie,
         ]);
     }
 
@@ -94,6 +94,7 @@ class SortieController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/sortie/{id}/inscription", name="sortie_inscription", methods={"POST"})
      */
@@ -105,7 +106,12 @@ class SortieController extends AbstractController
             return new JsonResponse(['status' => 'error', 'message' => 'User not found or not a participant'], 400);
         }
 
-        if (!$sortie->getParticipant()->contains($participant)) {
+        $now = new \DateTime();
+        if ($now > $sortie->getDateLimiteInscription()) {
+            return new JsonResponse(['status' => 'error', 'message' => 'Trop tard ! La date limite d\'inscription est dépassée !' ], 400);
+        }
+
+        if (!$sortie->getParticipants()->contains($participant)) {
             $sortie->addParticipant($participant);
             $entityManager->persist($sortie);
 
@@ -136,7 +142,6 @@ class SortieController extends AbstractController
         }
 
         return new JsonResponse(['status' => 'not_inscrit'], 400);
-    }
 
     #[Route('/create', name :'app_create')]
     public function create_Sortie(Request $request, EntityManagerInterface $entityManager, Security $security): Response

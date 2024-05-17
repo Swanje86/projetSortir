@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Participant;
+use App\Entity\Sortie;
 use App\Form\ProfilType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -48,6 +49,7 @@ class ProfilController extends AbstractController
     {
         return $this ->render('profil/profilDetails.html.twig', [
             'participant' => $participant,
+
         ]);
     }
 }

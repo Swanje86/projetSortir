@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Détail de la sortie | {{ parent() }}{% endblock %}
+{% block title %} Détails de la sortie | {{ parent() }}{% endblock %}
 
 {% block body %}
 
@@ -46,23 +46,14 @@
         </tr>
     </thead>
     <tbody>
-        {% for participant in sortie.participant %}
+        {% for participant in sortie.participants %}
             <tr>
-                <td>{{ participant.pseudo }}</td>
+                <td><a href="{{ path ('app_Profil', {'id' : participant.id}) }}">{{ participant.pseudo }}</a></td>
                 <td>{{ participant.nom }} {{ participant.prenom}}</td>
             </tr>
         {% endfor %}
     </tbody>
 </table>
-
-
-
-
-
-
-
-
-
 
 
 {% endblock %}

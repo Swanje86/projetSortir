@@ -16,8 +16,9 @@
     <dd>{{ participant.mail }}</dd>
     <dt>Ville de rattachement :</dt>
     <dd>{{ participant.site.nomSite}}</dd>
-
+    {% if app.user and app.user.id == participant.id %}
     <a href="{{ path('app_Modify', {'id' : participant.id}) }}" class="btn btn-primary">Modifier</a>
+    {% endif %}
     <a href="{{ path('app_sortie') }}" class="btn btn-primary">Retour</a>
 
 {% endblock %}

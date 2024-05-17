@@ -6,6 +6,7 @@ use App\Repository\ParticipantRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\PseudoTypes\List_;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -54,12 +55,12 @@ class Participant implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Sortie>
      */
-    #[ORM\ManyToMany(targetEntity: Sortie::class, mappedBy: 'participant')]
+    #[ORM\ManyToMany(targetEntity: Sortie::class, mappedBy: 'participants')]
     private Collection $sorties;
 
     public function __construct()
     {
-        $this->sorties = new ArrayCollection();
+        $this->sorties = new  ArrayCollection();
     }
 
     public function getId(): ?int
