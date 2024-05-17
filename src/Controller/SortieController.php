@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Site;
 use App\Entity\Sortie;
 use App\Entity\Ville;
+use App\Form\AjoutLieuType;
 use App\Form\CreateSortieType;
 use App\Form\ProfilType;
 use App\Form\SortieType;
@@ -69,7 +71,7 @@ class SortieController extends AbstractController
         // Comptage des participant à une sortie
         $participantCounts = [];
         foreach($sorties as $sortie) {
-            $participantCounts[$sortie->getId()] = count($sortie->getParticipant());
+            $participantCounts[$sortie->getId()] = count($sortie->getParticipants());
         }
         // Rendu du template avec les données nécessaires
         return $this->render('sortie/index.html.twig', [
@@ -142,18 +144,24 @@ class SortieController extends AbstractController
         }
 
         return new JsonResponse(['status' => 'not_inscrit'], 400);
-
+    }
     #[Route('/create', name :'app_create')]
     public function create_Sortie(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
         $participant = $security->getUser();
 
+        //form 1) form de création de sortie
         $createSortie = new Sortie();
         $form = $this->createForm(CreateSortieType::class, $createSortie);
         $form->handleRequest($request);
 
-        $villes = $entityManager->getRepository(Ville::class)->findAll();
+        //form 2) form de création de lieu
+        $lieu = new Lieu();
+        $formLieu = $this->createForm(AjoutLieuType::class, $lieu);
+        $formLieu->handleRequest($request);
 
+        $villes = $entityManager->getRepository(Ville::class)->findAll();
+//form 1)
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($createSortie);
             $entityManager->flush();
@@ -163,11 +171,23 @@ class SortieController extends AbstractController
             return $this->redirectToRoute('app_sortie');
         }
 
+        //form 2)
+        if ($formLieu->isSubmitted() && $formLieu->isValid()) {
+            $entityManager->persist($createSortie);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Un lieu a bien été créé !');
+
+            return new JsonResponse(['status' => 'success'], 200);
+        }
+
         return $this->render('sortie/create.html.twig', [
             'sortie_form' => $form,
+            'ajoutLieu_form' => $formLieu->createView(),
             'ville' => $villes,
             'participant' => $participant,
 
         ]);
     }
+
 }

@@ -41,7 +41,7 @@
                             <path d="M529 1635 c-14 -8 -35 -27 -45 -42 -17 -25 -19 -53 -22 -302 -3 -238 -1 -281 14 -319 40 -105 189 -111 237 -9 12 25 17 62 17 131 l0 97 93 -74 c607 -487 1412 -625 2151 -370 332 114 693 354 923 613 100 112 114 148 84 214 -12 28 -31 50 -50 60 -36 19 -97 20 -127 3 -11 -7 -74 -68 -140 -136 -353 -368 -780 -569 -1296 -612 -473 -39 -988 121 -1370 425 -42 33 -77 64 -78 69 0 4 45 7 100 7 118 0 160 14 190 62 33 52 23 122 -24 165 l-36 33 -297 0 c-238 -1 -303 -4 -324 -15z"/>
                         </g>
                     </svg>
-                    Reset date
+                    date
                 </button>
             </div>
             <!--Zone 2-->
@@ -64,7 +64,7 @@
                             <path d="M529 1635 c-14 -8 -35 -27 -45 -42 -17 -25 -19 -53 -22 -302 -3 -238 -1 -281 14 -319 40 -105 189 -111 237 -9 12 25 17 62 17 131 l0 97 93 -74 c607 -487 1412 -625 2151 -370 332 114 693 354 923 613 100 112 114 148 84 214 -12 28 -31 50 -50 60 -36 19 -97 20 -127 3 -11 -7 -74 -68 -140 -136 -353 -368 -780 -569 -1296 -612 -473 -39 -988 121 -1370 425 -42 33 -77 64 -78 69 0 4 45 7 100 7 118 0 160 14 190 62 33 52 23 122 -24 165 l-36 33 -297 0 c-238 -1 -303 -4 -324 -15z"/>
                         </g>
                     </svg>
-                    tous les filtres</button>
+                   filtres</button>
                 {{ form_end(form) }}
             </div>
         </div>
@@ -98,7 +98,7 @@
                     <td>
                         <!-- verifie si on est participant de la sortie-->
                         {% set isParticipantInSortie = false %}
-                        {% for sortieParticipant in sortie.participant %}
+                        {% for sortieParticipant in sortie.participants %}
                             {% if participant.id == sortieParticipant.id %}
                                 {% set isParticipantInSortie = true %}
                             {% endif %}
@@ -118,13 +118,10 @@
 {#todo nao gerer les droits buttons #}
                     <td>
                         <a href="{{ path('app_sortie_details',{'id' : sortie.id}) }}"> <button type="submit"> Afficher </button></a>
-
-                                 <a><button type="button" onclick="inscription({{ sortie.id }})"> S'inscrire </button></a>
+                        <a><button type="button" onclick="inscription({{ sortie.id }})"> S'inscrire </button></a>
                             {% if sortie.dateLimiteInscription > "now"|date("Y-m-d H:i:s") %}
                                 <a><button type="button" onclick="desistement({{ sortie.id }})"> Se désister </button></a>
-
                             {% endif %}
-
                     </td>
                     <script>
                         function inscription(sortieId) {
@@ -177,7 +174,7 @@
             {% endfor %}
         </table>
 
-    <a href="{{ path('app_create') }}" class="btn btn-primary">Créer une Sortie</a>
+    <a href="{{ path('app_create') }}" ><button>Créer une Sortie</button></a>
 
 
 
@@ -185,17 +182,6 @@
 
 
 
-    <!-- Date range script-->
-   {# <script>
-        document.getElementById('resetDateRange').addEventListener('click', function() {
-            document.getElementById('form_dateStartFilter').value = '';
-            document.getElementById('form_dateEndFilter').value = '';
-
-            // Submit the form
-            document.getElementById('form_sortie').submit();
-        });
-    </script>
-#}
 <script>
     document.getElementById('resetFilters').addEventListener('click', function() {
     // Réinitialiser les filtres

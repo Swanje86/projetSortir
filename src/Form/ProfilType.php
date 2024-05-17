@@ -67,6 +67,7 @@ class ProfilType extends AbstractType
                 'label' => 'Enregistrer',
                 'attr' => [
                     'class' => 'btn btn-primary',
+                    'onclick' => 'return confirm("Voulez-vous vraiment enregistrer les modifications ?")'
                 ]
             ])
             ->add('reset', ResetType::class, [

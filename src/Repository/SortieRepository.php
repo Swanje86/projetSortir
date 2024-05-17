@@ -16,18 +16,6 @@ class SortieRepository extends ServiceEntityRepository
         parent::__construct($registry, Sortie::class);
     }
 
-
-/*
-// Cette méthode prend en paramètre un tableau de filtres et construit une requête qui applique tous ces filtres.
-    public function findSortiesWithFilters($filters, $searchTerm)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.siteOrganisateur = :siteOrganisateur')
-            ->setParameter('siteOrganisateur', $siteOrganisateur)
-            ->getQuery()
-            ->getResult();
-    }*/
-
 // TABLEAU --> Cette méthode retourne certains champs de toutes les sorties.
     public function findSomeFields()
     {

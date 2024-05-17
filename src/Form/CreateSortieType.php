@@ -64,6 +64,12 @@ class CreateSortieType extends AbstractType
                 'placeholder' => '-- Veuillez choisir une ville de Sortie --',
                 'choice_label' => 'nomVille',
                 'required' => true,
+                'attr' => [
+                    'id' => 'ville_ID',
+                ],
+                'choice_attr' => function(Ville $ville) {
+                    return ['data-code-postal' => $ville->getCodePostal()];
+                },
             ])
             ->add('codePostal', EntityType::class, [
                 'label' => 'Code Postal :',
@@ -71,7 +77,10 @@ class CreateSortieType extends AbstractType
                 'class' => Ville::class,
                 'choice_label' => 'codePostal',
                 'required' => true,
-            //    'disabled' => true,
+              'disabled' => true,
+                'attr' => [
+                    'id' => 'cp_ID',
+                ],
             ])
 
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $formEvents) {

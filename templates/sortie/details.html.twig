@@ -6,35 +6,44 @@
 
     <h2>Détail de la sortie {{ sortie.nomSortie }}</h2>
 
-    <dt>Nom de la sortie</dt>
-    <dd>{{ sortie.nomSortie }}</dd>
-    <dt>Date et heure de la sortie</dt>
-    <dd>{{ sortie.dateHeureDebut|date('d/m/y H:i') }}</dd>
-    <dt>Date limite d'inscription</dt>
-    <dd>{{ sortie.dateLimiteInscription |date('d/m/y')  }}</dd>
-    <dt>Nombre de  places</dt>
-    <dd>{{ sortie.nbInscriptionsMax }}</dd>
-    <dt>Durée</dt>
-    <dd>{{ sortie.duree }}
-        {% if sortie.duree > 1 %}
-            heures
-        {% else %}
-            heure
-        {% endif %}</dd>
-    <dt>Description et infos</dt>
-    <dd>{{ sortie.infosSortie }}</dd>
-    <dt>Ville organisatrice</dt>
-    <dd>{{ sortie.siteOrganisateur.nomSite}}</dd>
-    <dt>Lieu</dt>
-    <dd>{{sortie.lieu.nomLieu }}</dd>
-    <dt>Rue</dt>
-    <dd>{{ sortie.lieu.rue }}</dd>
-    <dt>Code Postal</dt>
-    <dd>{{ sortie.lieu.ville.codePostal }}</dd>
-    <dt>Latitude</dt>
-    <dd>{{ sortie.lieu.latitude }}</dd>
-    <dt>Longitude</dt>
-    <dd>{{ sortie.lieu.longitude }}</dd>
+    <div class="grid-container">
+        <div class="grid-item">
+            <dt>Nom de la sortie</dt>
+            <dd>{{ sortie.nomSortie }}</dd>
+            <dt>Date et heure de la sortie</dt>
+            <dd>{{ sortie.dateHeureDebut|date('d/m/y H:i') }}</dd>
+            <dt>Date limite d'inscription</dt>
+            <dd>{{ sortie.dateLimiteInscription |date('d/m/y')  }}</dd>
+            <dt>Nombre de  places</dt>
+            <dd>{{ sortie.nbInscriptionsMax }}</dd>
+            <dt>Durée</dt>
+            <dd>{{ sortie.duree }}
+                {% if sortie.duree > 1 %}
+                    heures
+                {% else %}
+                    heure
+                {% endif %}</dd>
+            <dt>Description et infos</dt>
+            <dd>{{ sortie.infosSortie }}</dd>
+        </div>
+
+        <div class="grid-item">
+
+
+            <dt>Ville organisatrice</dt>
+            <dd>{{ sortie.siteOrganisateur.nomSite}}</dd>
+            <dt>Lieu</dt>
+            <dd>{{sortie.lieu.nomLieu }}</dd>
+            <dt>Rue</dt>
+            <dd>{{ sortie.lieu.rue }}</dd>
+            <dt>Code Postal</dt>
+            <dd>{{ sortie.lieu.ville.codePostal }}</dd>
+            <dt>Latitude</dt>
+            <dd>{{ sortie.lieu.latitude }}</dd>
+            <dt>Longitude</dt>
+            <dd>{{ sortie.lieu.longitude }}</dd>
+        </div>
+    </div>
 
 
     <h2>Liste des participants inscrits</h2>

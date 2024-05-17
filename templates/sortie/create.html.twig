@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} :: Création {% endblock %}
+{% block title %}Création | {{ parent() }} {% endblock %}
 
 {% block body %}
 
@@ -15,18 +15,22 @@
 
         <!-- Button trigger modal -->
     <div class="col">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#lieuModal">
             Ajouter un lieu
         </button>
     </div>
 
 </div>
 
-
+    <div>
+        <button type="submit">Enregistrer la sortie</button>
+        <button type="submit">Publier la sortie</button>
+        <button onclick="confirmAndRedirect()">Annuler</button>
+    </div>
 
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="lieuModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -34,7 +38,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-xl-6">
+                            {{ form_start(ajoutLieu_form,{'id' : 'form_lieu'}) }}
+                            {{ form_widget(ajoutLieu_form) }}
+                            {{ form_end(ajoutLieu_form) }}
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -46,7 +56,39 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
+//button ANNULER
+function confirmAndRedirect() {
+    var confirmation = confirm("Êtes-vous sûr de vouloir annuler ?");
+    if (confirmation) {
+        window.location.href = "{{ path('app_sortie') }}";
+    }
+}
+
+//chargement cp quand selection ville
+document.addEventListener('DOMContentLoaded', function() {
+    // Select the ville and codePostal fields
+    const villeSelect = document.querySelector('#ville_ID');
+    const codePostalInput = document.querySelector('#cp_ID');
+
+    // Check if the elements exist
+    if (villeSelect && codePostalInput) {
+        // Listen for changes on the ville field
+        villeSelect.addEventListener('change', function() {
+            // Get the selected option
+            const selectedOption = this.options[this.selectedIndex];
+
+            // Get the associated postal code
+            const codePostal = selectedOption.getAttribute('data-code-postal');
+
+            // Set the postal code as the value of the codePostal field
+            codePostalInput.value = codePostal;
+        });
+    } else {
+        console.error('villeSelect or codePostalInput not found');
+    }
+});
+
+      /*  document.addEventListener('DOMContentLoaded', (event) => {
             const villeSelect = document.querySelector('#{{ sortie_form.ville.vars.id }}');
             const codePostalInput = document.querySelector('#{{ sortie_form.codePostal.vars.id }}');
 
@@ -61,7 +103,52 @@
                     codePostalInput.value = '';
                 }
             });
+        });*/
+
+
+
+
+
+
+
+        // Ensure the DOM is fully loaded before running the script
+        document.addEventListener('DOMContentLoaded', function() {
+            // Select the form
+            const form = document.querySelector('#form_lieu');
+
+            // Check if the form exists
+            if (form) {
+                // Add an event listener to the form's submit event
+                form.addEventListener('submit', function(event) {
+                    // Prevent the default form submission behavior
+                    event.preventDefault();
+
+                    // Create a new FormData object
+                    const formData = new FormData(form);
+
+                    // Send the form data to the server using fetch
+                    fetch('/create', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            // Check the status of the response
+                            if (data.status === 'success') {
+                                // Close the modal
+                                var myModalEl = document.getElementById('lieuModal');
+                                var modalInstance = bootstrap.Modal.getInstance(myModalEl);
+                                modalInstance.hide();
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            } else {
+                console.error('Form with id "form_lieu" not found');
+            }
+
         });
+
     </script>
 
 {% endblock %}
